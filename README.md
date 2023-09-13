@@ -1,1 +1,1 @@
-# GraphLaPlus
+# GraphLaNet-v2

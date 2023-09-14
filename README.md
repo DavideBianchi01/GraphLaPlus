@@ -43,12 +43,12 @@ The code to replicate the experiments is almost self-contained in the repository
 To replicate our results, it is also required to download the data and the pretrained weights for the models. Due to their dimension, it was not possible to upload them directly on GitHub. For this reason, we made them available to download from Google Drive at the following link:
 
 - COULE:
-  - data > ...
-  - weights > ...
+  - data > https://drive.google.com/drive/folders/1UlXc2llAoaRX-tPchlT5ukRc4SaQX7Lv?usp=sharing
+  - weights > https://drive.google.com/drive/folders/1b-UWR_DzTs0d3vdAVyy2_IlOjHYC7pLt?usp=sharing
 
 - Mayo:
     - data > ...
-    - weights > ...
+    - weights > https://drive.google.com/drive/folders/1ySJICWKFIEqsR_g3BdQWFnc-80UhXxfG?usp=sharing
 
 To make them work, just download the files and place them into a folder tree with the following structure:
 

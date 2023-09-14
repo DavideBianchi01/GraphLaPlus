@@ -23,7 +23,7 @@ n = size(x_true, 1);
 
 %% Define the projector
 % Parameters
-n_theta = 120;
+n_theta = 180;
 n_d = floor(n * sqrt(2)); % Number of rays
 theta = linspace(0, 179, n_theta);
 

@@ -1,6 +1,6 @@
 %% Load COULE Data
-train_set = fileDatastore('./data/COULE_GT/*.mat','ReadFcn',@load,'FileExtensions','.mat');
-test_set = fileDatastore('./data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+train_set = fileDatastore('../../data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+test_set = fileDatastore('../../data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 
 train_set = transform(train_set, @(data) rearrange_datastore(data));
 test_set = transform(test_set, @(data) rearrange_datastore(data));

@@ -1,4 +1,4 @@
-function [L,W,D,A] = computeL_randomwalk(I,sigmaInt,R)
+function [L,W,D,A] = computeL(I,sigmaInt,R)
 % Input:  - I ,image matrix  
 %         - sigmaInt, parameter of the weight function
 %         - R, neighborhood radius in infinity norm ( R=2 è R=1 nella
@@ -33,10 +33,11 @@ end
 iW=iW(1:k-1); jW=jW(1:k-1); vW=vW(1:k-1);
 W=sparse(iW,jW,vW,n,n);
 A=W;
+W=W./norm(W(:));
 
 d=sum(W);
-Dinv=spdiags((1./d)', 0, n, n);
-L = speye(n, n)-Dinv*W;
+D=spdiags(d',0,n,n);
+L=D-W;
 
 end
 

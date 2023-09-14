@@ -4,8 +4,8 @@ clear
 close all
 
 %% Load COULE Data
-train_set = fileDatastore('./data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
-test_set = fileDatastore('./data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+train_set = fileDatastore('../data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+test_set = fileDatastore('../data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 
 train_set = transform(train_set, @(data) rearrange_datastore(data));
 test_set = transform(test_set, @(data) rearrange_datastore(data));
@@ -108,7 +108,7 @@ x_LaTik = l2lqFract(A, y_delta, options);
 R        = 5;
 sigmaInt = 1e-3;
 
-net   = load(".\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
+net   = load("..\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
 x_FBP = dlarray(reshape(fbp(A, y_delta, theta), [n, n, 1, 1]), "SSCB");
 
 % Compute prediction

@@ -4,8 +4,8 @@ clear
 close all
 
 %% Load COULE Data
-train_set = fileDatastore('./data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
-test_set = fileDatastore('./data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+train_set = fileDatastore('../data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+test_set = fileDatastore('../data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 
 train_set = transform(train_set, @(data) rearrange_datastore(data));
 test_set = transform(test_set, @(data) rearrange_datastore(data));
@@ -140,7 +140,7 @@ end
 R        = 5;
 sigmaInt = 1e-3;
 
-net   = load(".\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
+net   = load("..\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
 
 x_FBP = zeros(noise_level_n, n, n);
 x_LaFBP = zeros(noise_level_n, n, n);

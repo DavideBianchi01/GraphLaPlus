@@ -1,0 +1,11 @@
+In-Domain:
+	noise_level: 0.02
+	n_theta: 180
+	n_d: 362
+	range: [0, 179]
+
+Out-Domain:
+	noise_level: 0.04
+	n_theta: 180
+	n_d: 362
+	range: [0, 179]

@@ -1,7 +1,7 @@
 function Unet=Unet_model(inputShape, startChannels)
 layers = [
     % Input
-    imageInputLayer(inputShape, Normalization="none")
+    imageInputLayer(inputShape, Normalization="none", Name="input")
     
     %%% ENCODER
     % First level
@@ -41,6 +41,16 @@ layers = [
 
     convolution2dLayer(3, startChannels*8, Padding="same")
     batchNormalizationLayer
+    reluLayer("Name", "down_4")
+
+    % Fifth level
+    maxPooling2dLayer(2, Padding="same", Stride=2)
+    convolution2dLayer(3, startChannels*8, Padding="same")
+    batchNormalizationLayer
+    reluLayer
+
+    convolution2dLayer(3, startChannels*8, Padding="same")
+    batchNormalizationLayer
     reluLayer
    
     convolution2dLayer(3, startChannels*8, Padding="same")
@@ -52,6 +62,13 @@ layers = [
     reluLayer
 
     %%% DECODER
+    % Fourth level
+    transposedConv2dLayer(2, startChannels*8, Stride=2)
+    additionLayer(2, Name="up_4")
+    convolution2dLayer(3, startChannels*8, Padding="same")
+    batchNormalizationLayer
+    reluLayer
+
     % Third level
     transposedConv2dLayer(2, startChannels*4, Stride=2)
     additionLayer(2, Name="up_3")
@@ -91,16 +108,20 @@ layers = [
 
     % Output layer
     convolution2dLayer(1, 1, Padding="same")
-    reluLayer
+    additionLayer(2, Name="output")
+    reluLayer()
     ];
 
 % Define the layer graph
 lgraph = layerGraph(layers);
 
 % Add skip connections
+lgraph = connectLayers(lgraph, 'down_4', 'up_4/in2');
 lgraph = connectLayers(lgraph, 'down_3', 'up_3/in2');
 lgraph = connectLayers(lgraph, 'down_2', 'up_2/in2');
 lgraph = connectLayers(lgraph, 'down_1', 'up_1/in2');
+
+lgraph = connectLayers(lgraph, 'input', 'output/in2');
 
 % Create the model
 Unet = dlnetwork(lgraph);

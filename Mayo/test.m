@@ -3,7 +3,7 @@ clc
 clear
 close all
 
-%% Load COULE Data
+%% Load Mayo Data
 train_set = fileDatastore('../data/Mayo_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 test_set = fileDatastore('../data/Mayo_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 
@@ -14,8 +14,12 @@ test_set = transform(test_set, @(data) rearrange_datastore(data));
 train_set = transform(train_set, @(data) resize_Mayo(data));
 test_set = transform(test_set, @(data) resize_Mayo(data));
 
+% Normalize data
+train_set = transform(train_set, @(data) normalize(data));
+test_set = transform(test_set, @(data) normalize(data));
+
 %% Visualize sample image (for reference only)
-x_true = read(train_set);
+x_true = read(test_set);
 figure; imshow(x_true);
 
 % Get the shape of x
@@ -37,7 +41,7 @@ A = PRtomo(n, options);
 % Compute sinogram and add noise
 y = A * x_true(:);
 
-noise_level = 0.02;
+noise_level = 0.01;
 e = randn(size(y));
 e = e / norm(e) * norm(y) * noise_level;
 y_delta = y + e;
@@ -58,7 +62,7 @@ x_TV = reshape(l2lqDPRestarted(A, y_delta, TV, q, epsilon, noise_norm, ...
 
 % Parameters
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 
 LG    = computeL(x_TV, sigmaInt, R);
 
@@ -83,7 +87,7 @@ x_LaTV = l2lqFract(A, y_delta, options);
 
 %% Compute GraphLaTik solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 k        = 50;
 
 x_Tik = reshape(KTikhonovGenGCV(A, y_delta, k, TV), n, n);
@@ -110,9 +114,9 @@ x_LaTik = l2lqFract(A, y_delta, options);
 
 %% Compute GraphLaNet solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 
-net   = load("..\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
+net   = load("..\model_weights\Mayo\unet_mse_"+n_theta+".mat").net;
 x_FBP = dlarray(reshape(fbp(A, y_delta, theta), [n, n, 1, 1]), "SSCB");
 
 % Compute prediction
@@ -145,7 +149,7 @@ x_LaNet = l2lqFract(A, y_delta, options);
 
 %% Compute GraphLaFBP solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 
 % Build Graph Laplacian
 LG   = computeL(x_FBP, sigmaInt, R);
@@ -170,7 +174,7 @@ x_LaFBP = l2lqFract(A, y_delta, options);
 
 %% Compute GraphLaTrue solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 k        = 50;
 
 % Build Graph Laplacian
@@ -197,16 +201,16 @@ x_LaTrue = l2lqFract(A, y_delta, options);
 %% Visualize solution and compute metrics
 % Visualization
 figure;
-subplot(2, 5, 1); imshow(x_true); title("True");
-subplot(2, 5, 2); imshow(x_FBP); title("FBP");
-subplot(2, 5, 3); imshow(x_Tik); title("Tik");
-subplot(2, 5, 4); imshow(x_TV); title("TV");
-subplot(2, 5, 5); imshow(x_NN); title("Net");
-subplot(2, 5, 6); imshow(x_LaTrue); title("LaTrue");
-subplot(2, 5, 7); imshow(x_LaFBP); title("LaFBP");
-subplot(2, 5, 8); imshow(x_LaTik); title("LaTik");
-subplot(2, 5, 9); imshow(x_LaTV); title("LaTV");
-subplot(2, 5, 10); imshow(x_LaNet); title("LaNet");
+subplot(2, 5, 1); imshow(x_true); % title("True");
+subplot(2, 5, 2); imshow(x_FBP); % title("FBP");
+subplot(2, 5, 3); imshow(x_Tik); % title("Tik");
+subplot(2, 5, 4); imshow(x_TV); % title("TV");
+subplot(2, 5, 5); imshow(x_NN); % title("Net");
+subplot(2, 5, 6); imshow(x_LaTrue); % title("LaTrue");
+subplot(2, 5, 7); imshow(x_LaFBP); % title("LaFBP");
+subplot(2, 5, 8); imshow(x_LaTik); % title("LaTik");
+subplot(2, 5, 9); imshow(x_LaTV); % title("LaTV");
+subplot(2, 5, 10); imshow(x_LaNet); % title("LaNet");
 
 % Metrics
 RMSE_FBP = sqrt(mean((x_true - x_FBP).^2, "all"));
@@ -254,9 +258,3 @@ fprintf('x_LaTik: %0.4f     %0.4f     %0.4f          \n', RMSE_LaTik, SSIM_LaTik
 fprintf('x_LaTV:  %0.4f     %0.4f     %0.4f          \n', RMSE_LaTV, SSIM_LaTV, PSNR_LaTV);
 fprintf('x_LaNet: %0.4f     %0.4f     %0.4f          \n', RMSE_LaNet, SSIM_LaNet, PSNR_LaNet);
 fprintf('-------------------------------\n');
-
-
-
-
-
-

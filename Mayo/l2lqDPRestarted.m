@@ -56,6 +56,7 @@ for k=1:iter
     eta=discrepancyPrinciple(delta,RA,RL,QA,QL,b,wr,c);
     %modificato da me
     eta=max(eta,1e-6);
+    eta=min(eta,1e6);
     %----------------
     y=[RA; sqrt(eta)*RL]\[QA'*(b(:)); sqrt(eta)*(QL'*(wr))];
     %uM=memory;

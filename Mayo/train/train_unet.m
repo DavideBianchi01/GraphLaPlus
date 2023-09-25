@@ -19,11 +19,19 @@ n = 256; % Number of pixels per dimension (assumed to be squared)
 n_d = floor(n * sqrt(2)); % Detector size
 n_theta = 180; % Number of projections equispaced in the [0, pi] domain
 
-noise_level = 0.02; % Percentage norm of the noise compared with y
+x_gt = read(test_set);
+
+noise_level = 0.01; % Percentage norm of the noise compared with y
 
 % Generate projector
 theta = linspace(0, 179, n_theta); % Projection angles
-A = fanlineartomo(n, theta, n_d);
+% A = fanlineartomo(n, theta, n_d);
+
+% Define the projector
+options.phantomImage = x_gt;
+options.angles = theta;
+options.p = n_d;
+A = PRtomo(n, options);
 
 %% Training parameters
 batch_size = 10;
@@ -100,13 +108,13 @@ while epoch < n_epochs && ~monitor.Stop
 end
 
 %% Save the model after training
-save("..\..\model_weights\Mayo\unet_mae_" + n_theta + ".mat", "net")
+save("..\..\model_weights\Mayo\unet_mse_" + n_theta + ".mat", "net")
 
 %% Load the model and do predictions on the test set
-load("..\..\model_weights\Mayo\unet_mae_" + n_theta + ".mat", "net")
+load("..\..\model_weights\Mayo\unet_mse_" + n_theta + ".mat", "net")
 
 % Get an x_gt from test set
-x_gt = read(test_set);
+% x_gt = read(test_set);
 
 % Compute the corresponding y
 y = A * x_gt(:);
@@ -123,16 +131,17 @@ x_FBP = dlarray(reshape(fbp(A, y_delta, theta), [n, n, 1, 1]), "SSCB");
 % Compute prediction
 x_NN = predict(net, x_FBP);
 
-%% Show results
 % Convert dlarrays to double array
 x_FBP = double(gather(extractdata(x_FBP)));
 x_NN = double(gather(extractdata(x_NN)));
 
+%% Show results
 figure;
 subplot(1, 3, 1); imshow(reshape(x_gt, n, n));
 subplot(1, 3, 2); imshow(reshape(x_FBP, n, n));
 subplot(1, 3, 3); imshow(reshape(x_NN, n, n));
 
+ssim(x_NN, x_gt)
 
 %%  Utility functions
 function [loss,gradients,state] = modelLoss(net, X_fbp, X_gt)
@@ -141,7 +150,7 @@ function [loss,gradients,state] = modelLoss(net, X_fbp, X_gt)
 [X_pred, state] = forward(net, X_fbp);
 
 % Calculate cross-entropy loss.
-loss = mean(sum(abs(X_pred - X_gt), [1, 2, 3]));
+loss = mean(sum((X_pred - X_gt).^2, [1, 2, 3]));
 
 % Calculate gradients of loss with respect to learnable parameters.
 gradients = dlgradient(loss, net.Learnables);

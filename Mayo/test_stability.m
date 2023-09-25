@@ -3,22 +3,30 @@ clc
 clear
 close all
 
-%% Load COULE Data
-train_set = fileDatastore('../data/COULE_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
-test_set = fileDatastore('../data/COULE_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+%% Load Mayo Data
+train_set = fileDatastore('../data/Mayo_train/*.mat','ReadFcn',@load,'FileExtensions','.mat');
+test_set = fileDatastore('../data/Mayo_test/*.mat','ReadFcn',@load,'FileExtensions','.mat');
 
 train_set = transform(train_set, @(data) rearrange_datastore(data));
 test_set = transform(test_set, @(data) rearrange_datastore(data));
 
+% Resize data
+train_set = transform(train_set, @(data) resize_Mayo(data));
+test_set = transform(test_set, @(data) resize_Mayo(data));
+
+% Normalize data
+train_set = transform(train_set, @(data) normalize(data));
+test_set = transform(test_set, @(data) normalize(data));
+
 %% Visualize sample image (for reference only)
-x_true = read(train_set);
+x_true = read(test_set);
 
 % Get the shape of x
 n = size(x_true, 1);
 
 %% Define the projector
 % Parameters
-n_theta = 120;
+n_theta = 180;
 n_d = floor(n * sqrt(2)); % Number of rays
 theta = linspace(0, 179, n_theta);
 
@@ -33,8 +41,8 @@ A = PRtomo(n, options);
 y = A * x_true(:);
 
 noise_level_min = 0;
-noise_level_max = 0.1;
-noise_level_n   = 11;
+noise_level_max = 0.06;
+noise_level_n   = 7;
 
 noise_levels = linspace(noise_level_min, noise_level_max, noise_level_n);
 noise_levels(1) = 1e-3;
@@ -70,7 +78,7 @@ for k = 1:noise_level_n
     
     % Parameters
     R        = 5;
-    sigmaInt = 1e-3;
+    sigmaInt = 2e-4;
     
     LG    = computeL(xx_TV, sigmaInt, R);
     
@@ -97,7 +105,7 @@ end
 
 %% Compute GraphLaTik solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 n_it        = 50;
 
 x_Tik = zeros(noise_level_n, n, n);
@@ -138,9 +146,9 @@ end
 
 %% Compute GraphLaNet solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 
-net   = load("..\model_weights\COULE\unet_mae_"+n_theta+".mat").net;
+net   = load("..\model_weights\Mayo\unet_mse_"+n_theta+".mat").net;
 
 x_FBP = zeros(noise_level_n, n, n);
 x_LaFBP = zeros(noise_level_n, n, n);
@@ -214,7 +222,7 @@ end
 
 %% Compute GraphLaTrue solution
 R        = 5;
-sigmaInt = 1e-3;
+sigmaInt = 2e-4;
 
 x_LaTrue = zeros(noise_level_n, n, n);
 fprintf("------ LaTrue SOLUTION --------\n");

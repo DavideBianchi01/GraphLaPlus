@@ -189,6 +189,7 @@ for k=1:iter
     if isempty(mu)
         eta=discrepancyPrinciple(delta,RA,RL,QA,QL,b,wr,c);
         eta=max(eta,1e-6);
+        % eta=min(eta,1e6);
     else
         eta=c*mu;
     end

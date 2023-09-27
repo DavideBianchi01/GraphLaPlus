@@ -41,15 +41,11 @@ A = PRtomo(n, options);
 y = A * x_true(:);
 
 noise_level_min = 0;
-noise_level_max = 0.06;
+noise_level_max = 0.03;
 noise_level_n   = 7;
 
 noise_levels = linspace(noise_level_min, noise_level_max, noise_level_n);
 noise_levels(1) = 1e-3;
-
-% Initialize noise (normalized)
-e = randn(size(y));
-e = e / norm(e) * norm(y);
 
 %% Compute TV solution at convergence (for comparison) and GraphLaTV
 TV         = TVclass(n,n);
@@ -65,6 +61,11 @@ x_TV = zeros(noise_level_n, n, n);
 x_LaTV = zeros(noise_level_n, n, n);
 fprintf("------ TV SOLUTION --------\n");
 for k = 1:noise_level_n
+    % Initialize noise (normalized)
+    rng(42*k);
+    e = randn(size(y));
+    e = e / norm(e) * norm(y);
+
     % Get noise level
     noise_level = noise_levels(k);
     fprintf("k = %i. Running noise_level = %0.3f. \n", k, noise_level);
@@ -112,6 +113,11 @@ x_Tik = zeros(noise_level_n, n, n);
 x_LaTik = zeros(noise_level_n, n, n);
 fprintf("------ Tik SOLUTION --------\n");
 for k = 1:noise_level_n
+    % Initialize noise (normalized)
+    rng(42*k);
+    e = randn(size(y));
+    e = e / norm(e) * norm(y);
+    
     % Get noise level
     noise_level = noise_levels(k);
     fprintf("k = %i. Running noise_level = %0.3f. \n", k, noise_level);
@@ -157,6 +163,11 @@ x_NN = zeros(noise_level_n, n, n);
 x_LaNet = zeros(noise_level_n, n, n);
 fprintf("------ NN and FBP SOLUTIONs --------\n");
 for k = 1:noise_level_n
+    % Initialize noise (normalized)
+    rng(42*k);
+    e = randn(size(y));
+    e = e / norm(e) * norm(y);
+    
     % Get noise level
     noise_level = noise_levels(k);
     fprintf("k = %i. Running noise_level = %0.3f. \n", k, noise_level);
@@ -227,6 +238,11 @@ sigmaInt = 2e-4;
 x_LaTrue = zeros(noise_level_n, n, n);
 fprintf("------ LaTrue SOLUTION --------\n");
 for k = 1:noise_level_n
+    % Initialize noise (normalized)
+    rng(42*k);
+    e = randn(size(y));
+    e = e / norm(e) * norm(y);
+    
     % Get noise level
     noise_level = noise_levels(k);
     fprintf("k = %i. Running noise_level = %0.3f. \n", k, noise_level);

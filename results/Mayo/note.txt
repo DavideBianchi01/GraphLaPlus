@@ -3,9 +3,13 @@ In-Domain:
 	n_theta: 180
 	n_d: 362
 	range: [0, 179]
+	sigmaInt: 2e-4
+	R: 5
 
 Out-Domain:
-	noise_level: 0.03
+	noise_level: 0.02
 	n_theta: 180
 	n_d: 362
 	range: [0, 179]
+	sigmaInt: 2e-4
+	R: 5

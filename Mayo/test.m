@@ -41,7 +41,8 @@ A = PRtomo(n, options);
 % Compute sinogram and add noise
 y = A * x_true(:);
 
-noise_level = 0.01;
+noise_level = 0.02;
+rng(42);
 e = randn(size(y));
 e = e / norm(e) * norm(y) * noise_level;
 y_delta = y + e;

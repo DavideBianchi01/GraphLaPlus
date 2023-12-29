@@ -1,6 +1,6 @@
 # GraphLa+
 
-This is the Official GitHub repository for the paper *GraphLa+* by D.Bianchi, D.Evangelista, S.Aleotti, M.Donatelli and E.Loli Piccolomini.
+This is the Official GitHub repository for the paper *GraphLa+* by D.Bianchi, D.Evangelista, S.Aleotti, M.Donatelli, E.Loli Piccolomini and W.Li.
 
 ## Introduction
 In this work we aim to solve CT-related problems in the form
@@ -15,10 +15,10 @@ $$
     \min_{x \in \mathbb{R}^n} \frac{1}{2} || Kx - y^\delta ||_2^2 + \alpha|| Lx ||_1.
 $$
 
-In particular, we consider $L$ to be the Graph Laplacian operator defined by a coarse approximation $\tilde{x}$ of $x_{gt}$. The approximation $\tilde{x}$ is constructed by a reconstruction algorithm $\Psi(y^\delta)$ and the resulting operator is 
+In particular, we consider $L$ to be the Graph Laplacian operator defined by a coarse approximation $\tilde{x}$ of $x_{gt}$. The approximation $\tilde{x}$ is constructed by a reconstruction algorithm $\Psi_{\Theta}(y^\delta)$ and the resulting operator is 
 
 $$
-    L = \Delta^{\Psi(y^\delta)}.
+    L = \Delta_{\Psi^\delta_{\Theta}}.
 $$
 
 We consider different choices of $\Psi$, for example:

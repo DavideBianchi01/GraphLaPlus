@@ -21,12 +21,12 @@ $$
     L = \Delta_{\Psi^\delta_{\Theta}}.
 $$
 
-We consider different choices of $\Psi$, for example:
+We consider different choices of $\Psi_{\Theta}$, for example:
 
-- $\Psi$ = Filtered Back-Projection (FBP);
-- $\Psi$ = Tikhonov-Regularized solution;
-- $\Psi$ = TV-Regularized solution;
-- $\Psi$ = Neural Network;
+- $\Psi_{\Theta}$ = Filtered Back-Projection (FBP);
+- $\Psi_{\Theta}$ = Tikhonov-Regularized solution;
+- $\Psi_{\Theta}$ = TV-Regularized solution;
+- $\Psi_{\Theta}$ = Neural Network;
 
 For each of the choices above, we compute the associated Graph Laplacian solution given by the minimization problem above. Extensive numerical results show the effectiveness of the proposed method.
 

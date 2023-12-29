@@ -1,6 +1,6 @@
 # GraphLa+
 
-This is the Official GitHub repository for the paper *GraphLa+* by D.Bianchi, D.Evangelista, S.Aleotti, M.Donatelli, E.Loli Piccolomini and W.Li.
+This is the Official GitHub repository for the paper *A data-dependent regularization method based on the graph Laplacian* by D. Bianchi, D. Evangelista, S. Aleotti, M. Donatelli, E. Loli Piccolomini and W. Li.
 
 ## Introduction
 In this work we aim to solve CT-related problems in the form

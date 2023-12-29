@@ -1,4 +1,4 @@
-# GraphLa+
+# $\texttt{graphLa+}\Psi$
 
 This is the Official GitHub repository for the paper *A data-dependent regularization method based on the graph Laplacian* by D. Bianchi, D. Evangelista, S. Aleotti, M. Donatelli, E. Loli Piccolomini and W. Li.
 

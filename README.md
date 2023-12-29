@@ -12,7 +12,7 @@ $$
 by considering the minimization problem
 
 $$
-    \min_{x \in \mathbb{R}^n} \frac{1}{2} || Kx - y^\delta ||_2^2 + \lambda|| Lx ||_1.
+    \min_{x \in \mathbb{R}^n} \frac{1}{2} || Kx - y^\delta ||_2^2 + \alpha|| Lx ||_1.
 $$
 
 In particular, we consider $L$ to be the Graph Laplacian operator defined by a coarse approximation $\tilde{x}$ of $x_{gt}$. The approximation $\tilde{x}$ is constructed by a reconstruction algorithm $\Psi(y^\delta)$ and the resulting operator is 

@@ -91,7 +91,7 @@ while epoch < n_epochs && ~monitor.Stop
 end
 
 %% Save the model after training
-save("model_weights\unet_mse_" + n_theta + ".mat", "net")
+save("..\..\model_weights\COULE\unet_mse_" + n_theta + ".mat", "net")
 
 %% Load the model and do predictions on the test set
 load("model_weights\unet_mse_" + n_theta + ".mat", "net")

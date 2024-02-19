@@ -47,7 +47,7 @@ To replicate our results, it is also required to download the data and the pretr
   - weights > https://drive.google.com/drive/folders/1b-UWR_DzTs0d3vdAVyy2_IlOjHYC7pLt?usp=sharing
 
 - Mayo:
-    - data > ...
+    - data > https://drive.google.com/drive/folders/1mlT-87fK_aPSkgSvh8KYZPYhJiUoscWr?usp=sharing
     - weights > https://drive.google.com/drive/folders/1ySJICWKFIEqsR_g3BdQWFnc-80UhXxfG?usp=sharing
 
 To make them work, just download the files and place them into a folder tree with the following structure:

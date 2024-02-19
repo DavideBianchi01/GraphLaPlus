@@ -72,5 +72,12 @@ To make them work, just download the files and place them into a folder tree wit
 
 ## Cite the work
 ```
-insert citation here
+@misc{bianchi2023datadependent,
+      title={A data-dependent regularization method based on the graph Laplacian}, 
+      author={Davide Bianchi and Davide Evangelista and Stefano Aleotti and Marco Donatelli and Elena Loli Piccolomini and Wenbin Li},
+      year={2023},
+      eprint={2312.16936},
+      archivePrefix={arXiv},
+      primaryClass={math.NA}
+}
 ```
